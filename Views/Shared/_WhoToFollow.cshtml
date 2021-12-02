@@ -1,0 +1,26 @@
+﻿@using db_connectivity.Models;
+@{ List<User> list = ViewData["parent"] as List<User>; }
+
+@foreach (User u in list)
+{
+    <div class="row text-left">
+        <div class="col-md-2">
+            <img class="rounded-circle" src="@u.imageURL" alt="" style="
+                           display: block;
+                           width: 42px;
+                           height:42px;
+                           object-fit:cover;
+                           ">
+        </div>
+        <div class="col-md-6" style="margin-top: 10px;">
+            <div>
+                <div class="font-weight-bold">@u.name</div>
+                <div class="text-secondary small">&nbsp; @@@u.username</div>
+            </div>
+        </div>
+        <div class="col-md-4" style="margin-top: 10px;">
+            <div><button onclick="location.href='/Home/ProfileRedirect?name=@u.username'" type="button" class="btn btn-outline-danger text-white">Visit</button></div>
+        </div>
+    </div>
+    <hr>
+}

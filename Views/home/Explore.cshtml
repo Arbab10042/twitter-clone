@@ -1,0 +1,82 @@
+﻿
+@{
+    Layout = null;
+}
+@using db_connectivity.Models;
+@model User
+@{ User userDetails = Model; }
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+    <link rel="icon" href="http://www.animecorner.me/favicon.ico">
+    <title>Twitter Project Explore</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+</head>
+<body class="text-center" style="
+      background-image: url(https://i.imgur.com/aUrq6pX.jpg);
+      overflow-x:hidden;
+      ">
+    <div>
+        @{
+            @Html.Partial("_HeaderNavBar", new ViewDataDictionary { { "parent", "Search" } })
+        }
+    </div>
+
+    <div class="container-fluid" style="width:100%;padding: 3px;margin-top: 5%;">
+        <div class="row">
+            <div class="col-md-3" style="padding-left: 100px;">
+                @Html.Partial("_UserProfileCard", new ViewDataDictionary { { "parent", userDetails } })
+            </div>
+            <div class="col-md-5">
+
+                <div class="card">
+                    <div class="card-header text-left">
+                        <h6>Exploring category tweets for '#@ViewBag.catName'</h6>
+                    </div>
+                </div>
+
+                @Html.Partial("_TweetBlock", new ViewDataDictionary { { "parent", ViewBag.GetCategoryTweets } })
+
+
+            </div>
+            <div class="col-md-4">
+
+                <div class="card bg-dark text-white" style="width: 21rem;">
+                    <div class="card-header">
+                        <h5 class="card-title">You May Like</h5>
+                    </div>
+                    <div class="card-body bg-dark">
+                 @foreach (string s in ViewBag.ListDistinctCategories)
+                 {
+                     if (ViewBag.catName == s) { continue; }
+                        <div class="row text-left">
+                            <div class="col-md-8" style="margin-top: 10px;">
+                                <div>
+                                    <div class="font-weight-bold">#@s</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-top: 10px;">
+                                <div><button onclick="location.href='/Home/Explore/@s/'" type="button" class="btn btn-outline-danger text-white">Explore</button></div>
+                            </div>
+                        </div>
+                        <hr>
+                 }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>
+</html>

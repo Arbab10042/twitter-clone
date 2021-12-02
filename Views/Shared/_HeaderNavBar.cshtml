@@ -1,0 +1,35 @@
+﻿@{ string pageName = ViewData["parent"] as string; }
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/Home/homePage">
+            <img src="https://lh3.googleusercontent.com/proxy/Cz15Shr8I4fPLTJ49dSVXJu9uKcuyFUl2FGtzQDLD_NqnCvL_geTswcB1NoMEFiCKCGNU1wicnGCJ5Tsg6NvF4dxUtx-XtKDZle9DZLCJoAan_sL3DE" width="30" height="30" class="d-inline-block align-top" alt=""> Project
+        </a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navbarColor01" style="">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item @(pageName == "Home" ? "active" : "")">
+                    <a class="nav-link" href="/Home/homePage"><i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp; Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item @((pageName == "Explore" || pageName == "Search") ? "active" : "")">
+                    <a class="nav-link" href="/Home/Explore/general/"><i class="fa fa-hashtag fa-fw" aria-hidden="true"></i>&nbsp; Explore</a>
+                </li>
+                <li class="nav-item @(pageName == "Profile" ? "active" : "")">
+                    <a class="nav-link" href="/Home/ProfileRedirect?name=@Session["username"]"><i class="fa fa-user fa-fw" aria-hidden="true"></i>&nbsp; Profile </a>
+                </li>
+                <li class="nav-item @(pageName == "Settings" ? "active" : "")">
+                    <a class="nav-link" href="/Home/Settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings</a>
+                </li>
+                <li class="nav-item @(pageName == "Logout" ? "active" : "")">
+                    <a class="nav-link" href="/Home/Logout"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp; Logout</a>
+                </li>
+            </ul>
+            <form method="get" action="/Home/Search" class="form-inline">
+                <input name="id" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-dark my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+</header>

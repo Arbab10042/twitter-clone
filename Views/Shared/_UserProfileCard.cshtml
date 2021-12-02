@@ -1,0 +1,35 @@
+﻿@using db_connectivity.Models;
+@{ User userDetails = ViewData["parent"] as User; }
+
+<div class="card" style="width: 18rem;background-color: transparent;">
+
+    <img style="cursor:pointer;" onclick="location.href='/Home/ProfileRedirect?name=@userDetails.username'" class="card-img-top mb-1" src="@userDetails.imageURL" alt="" width="172" height="auto" style="
+                  display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                  max-height:250px;
+                  object-fit:cover;
+                  ">
+    <div class="card-body bg-dark">
+        <h5 class="card-title text-white">@userDetails.name</h5>
+        <p class="card-text text-white small">@@@userDetails.username</p>
+        <hr>
+        <p class="card-text text-white">@userDetails.bio</p>
+
+        <hr>
+        <span style="color: white;">
+            <p class="card-text text-white">
+                <i class="fa fa-map-marker"></i>&nbsp; @if (userDetails.country != null && userDetails.country != "") { @userDetails.country; } else { @Html.Raw("Neverland") }
+            </p>
+        </span>
+
+        <hr>
+        <span style="color: white;">
+            <p class="card-text text-white"><i class="fa fa-calendar"></i>&nbsp; Joined @userDetails.dateJoin </p>
+        </span>
+        <hr>
+        <span style="color: white;">
+            <p class="card-text text-white"><i class="fa fa-link"></i>&nbsp; @if (userDetails.website != null && userDetails.website != "") { @userDetails.website; } else { @Html.Raw("http://twitterproject.com") }</p>
+        </span>
+    </div>
+</div>

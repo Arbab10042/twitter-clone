@@ -1,0 +1,10 @@
+﻿@{ string followers = ViewData["a"] as string; }
+@{ string following = ViewData["b"] as string; }
+@{ string userid = ViewData["id"] as string; }
+
+<div style="cursor:pointer;" onclick="location.href='/Home/ProfileFollowers?id=@userid'" class="col">
+    <b>@followers</b> Followers
+</div>
+<div style="cursor:pointer;" onclick="location.href='/Home/ProfileFollowing?id=@userid'" class="col">
+    <b>@following</b> Following
+</div>

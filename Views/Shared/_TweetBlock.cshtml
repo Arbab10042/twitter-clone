@@ -1,0 +1,44 @@
+﻿@using db_connectivity.Models;
+@{ List<Tweet> list = ViewData["parent"] as List<Tweet>; }
+
+@foreach (Tweet t in list)
+{
+    <div class="card mb-3 text-left">
+        <div style="cursor:pointer;" onclick="location.href='/Home/ViewPost?postid=@t.postid'" class="card-body">
+            <div class="row">
+                <div class="col-md-1">
+                    <img class="mb-1 rounded-circle" src="@t.userImage" alt="" style="
+                           display: block;
+                           width: 42px;
+                           height:42px;
+                           object-fit:cover;
+                           ">
+                </div>
+                <div class="col-md-11" style="margin-top: 10px;">
+                    <div><span class="text-dark font-weight-bold">@t.name</span><span class="text-secondary small">&nbsp; @@@t.username</span></div>
+                    <hr>
+                    <p class="text-dark font-weight-normal">@t.postString</p>
+                    @if (t.postImageURL != null && t.postImageURL != "")
+                    {
+                    <img class="mb-1" src="@t.postImageURL" alt="" style="
+                                display: block;
+                                margin-left:auto;
+                                margin-right:auto;
+                                width: 100%;
+                                max-height:250px;
+                                object-fit:cover;
+                                ">
+                        
+                        <br>
+                    }
+                    <p class="text-secondary small">@t.datePost</p>
+                    <hr>
+                    @if (t.likes != null && t.totalComments != null)
+                    {
+                        <span class="text-dark"><b>@t.totalComments </b>Comments</span><span class="text-dark">&nbsp; <b>@t.likes </b>Likes</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

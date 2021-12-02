@@ -1,0 +1,188 @@
+﻿@{
+    Layout = null;
+}
+@using db_connectivity.Models;
+@model User
+@{ User userDetails = Model; }
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+    <link rel="icon" href="http://www.animecorner.me/favicon.ico">
+    <title>Twitter Project View Post</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+</head>
+<body class="text-center" style="
+      background-image: url(https://i.imgur.com/aUrq6pX.jpg);
+      overflow-x:hidden;
+      ">
+    <div>
+        @{
+            @Html.Partial("_HeaderNavBar", new ViewDataDictionary { { "parent", "ViewPost" } })
+        }
+
+    </div>
+
+    <div class="container-fluid" style="width:100%;padding: 3px;margin-top: 5%;">
+        <div class="row">
+            <div class="col-md-3" style="padding-left: 100px;">
+                @Html.Partial("_UserProfileCard", new ViewDataDictionary { { "parent", userDetails } })
+            </div>
+            <div class="col-md-5">
+                <br>
+
+                <div class="card mb-3 text-left">
+
+                    @{ Tweet tweetData = ViewBag.tweetData; }
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <img class="mb-1 rounded-circle" src="@tweetData.userImage" alt="" style="
+                           display: block;
+                           width: 42px;
+                           height:42px;
+                           object-fit: cover;
+                           ">
+                            </div>
+                            <div class="col-md-11" style="margin-top: 10px;">
+                                <div><a href="../Home/Profile?id=@tweetData.userid"><span class="text-dark font-weight-bold">@tweetData.name</span><span class="text-secondary small">&nbsp; @@@tweetData.username</span></a></div>
+                                <hr>
+                                <p class="text-dark font-weight-normal">@tweetData.postString</p>
+                                
+                                <img class="mb-1" src="@tweetData.postImageURL" alt="" style="
+                                   display: block;
+                                   margin-left:auto;
+                                   margin-right:auto;
+                                   width: 100%;
+                                   object-fit:cover;
+                                   ">
+                                <br>
+                                <p class="text-secondary small">@tweetData.datePost</p>
+                                <hr>
+                                <span class="text-dark"><b>@tweetData.totalComments </b>Comments</span><span class="text-dark">&nbsp; <b>@tweetData.likes </b>Likes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3 text-left">
+                    <div class="card-header">
+                        <h6>Comments</h6>
+                    </div>
+                    <div class="card-body">
+
+                        @foreach (Tweet t in ViewBag.commentsList)
+                        {
+
+                            <div class="row border mb-3" style="padding:5px;">
+                                <div class="col-md-1">
+                                    <img class="mb-1 rounded-circle" src="@t.userImage" alt="" style="
+                           display: block;
+                           width: 42px;
+                           height:42px;
+                           object-fit:cover;
+                           ">
+                                </div>
+                                <div class="col-md-11" style="margin-top: 10px;">
+                                    <div><span class="text-dark font-weight-bold">@t.name</span><span class="text-secondary small">&nbsp; @@@t.username</span></div>
+                                    <hr>
+                                    <p class="text-dark font-weight-normal">@t.postString</p>
+                                    <p class="text-secondary small">@t.datePost</p>
+                                </div>
+                            </div>
+
+                        }
+
+
+                        </div>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+
+                <div class="card bg-dark text-white mb-3" style="width: 21rem;">
+                    <div class="card-header">
+                        <div>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target="#tweetModal">Create Comment</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card bg-dark text-white mb-3" style="width: 21rem;">
+                    <div class="card-header">
+                        <div>
+                            @{
+                                string f = ViewBag.likeThisTweet;
+                                if (f == "0")
+                                {
+                                    <button onclick="location.href='/Home/likeATweet?id=@ViewBag.postid'" type="button" class="btn btn-secondary btn-lg btn-block">Like Tweet</button>
+                                }
+                                else
+                                {
+                                    <button onclick="location.href='/Home/unlikeATweet?id=@ViewBag.postid'" type="button" class="btn btn-secondary btn-lg btn-block">Unlike Tweet</button>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="card bg-dark text-white" style="width: 21rem;">
+                    <div class="card-header">
+                        <h5 class="card-title">Who To Follow?</h5>
+                    </div>
+                    <div class="card-body bg-dark">
+                        @Html.Partial("_WhoToFollow", new ViewDataDictionary { { "parent", ViewBag.WhoToFollow } })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade text-left" id="tweetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Comment</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="../Home/CreateComment">
+                            <div class="form-group">
+
+                             <label for="tweetCaption">Text</label>
+                                <textarea name="commentString" class="form-control" id="tweetCaption" rows="3" maxlength="199"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="formID">Post ID (Ignore)</label>
+                                <input name="postid" value="@ViewBag.postid" type="text" readonly class="form-control" id="formID">
+                            </div>
+
+
+                            <hr>
+
+                            <button id="tweetFormSubmit" type="submit" class="btn btn-danger">Submit</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+</body>
+</html>

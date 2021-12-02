@@ -1,0 +1,158 @@
+﻿
+@{
+    Layout = null;
+}
+@using db_connectivity.Models;
+@model User
+@{ User userDetails = Model; }
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+    <link rel="icon" href="http://www.animecorner.me/favicon.ico">
+    <title>Twitter Project Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#formImageUpload').on("change", function () {
+                var $files = $(this).get(0).files;
+                if ($files.length) {
+                    // Reject big files
+                    if ($files[0].size > $(this).data("max-size") * 1024) {
+                        alert("Please select a smaller file");
+                        return false;
+                    }
+
+                    // Begin file upload
+                    $('#formImage').val('');
+                    $('#formImage').attr('placeholder', 'Uploading...');
+                    $('#formImage').prop('disabled', true);
+                    $('#tweetFormSubmit').prop('disabled', true);
+
+                    var apiUrl = 'https://api.imgur.com/3/image';
+                    var apiKey = '576a9c3ea104f96';
+
+                    var settings = {
+                        async: true,
+                        crossDomain: true,
+                        processData: false,
+                        contentType: false,
+                        type: 'POST',
+                        url: apiUrl,
+                        headers: {
+                            Authorization: 'Client-ID ' + apiKey,
+                            Accept: 'application/json'
+                        },
+                        mimeType: 'multipart/form-data'
+                    };
+
+                    var formData = new FormData();
+                    formData.append("image", $files[0]);
+                    settings.data = formData;
+
+                    // Image URL available at response.data.link
+                    $.ajax(settings).done(function (response) {
+                        let json = JSON.parse(response);
+                        $('#formImage').val(json.data.link);
+                        $('#formImage').attr('placeholder', 'abc.png');
+                        $('#formImage').prop('disabled', false);
+                        $('#tweetFormSubmit').prop('disabled', false);
+                    });
+
+                }
+            });
+        });
+    </script>
+
+</head>
+<body class="text-center" style="
+      background-image: url(https://i.imgur.com/aUrq6pX.jpg);
+      overflow-x:hidden;
+      ">
+    @{
+        @Html.Partial("_HeaderNavBar", new ViewDataDictionary { { "parent", "Profile" } })
+    }
+    <div style="background:black;height: 400px;width:100%;">
+        <img src="https://coverfiles.alphacoders.com/495/49508.png" style="
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            ">
+    </div>
+    <div class="container-fluid bg-dark text-white" style="width:100%;padding: 3px;">
+        <div class="row">
+            <div class="col-md-4">&nbsp;</div>
+            <div class="col-md-4">
+                <div class="row">
+                    @{
+                        @Html.Partial("_ProfileFollowingData", new ViewDataDictionary { { "a", ViewBag.UserProfileCountData[0] }, { "b", ViewBag.UserProfileCountData[1] }, { "id", userDetails.userid } })
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">&nbsp;</div>
+        </div>
+    </div>
+    <div class="container-fluid" style="width:100%;padding: 3px;">
+        <div class="row">
+            <div class="col-md-3" style="margin-top: -120px;padding-left: 100px;">
+                @Html.Partial("_UserProfileCard", new ViewDataDictionary { { "parent", userDetails } })
+            </div>
+            <div class="col-md-5">
+                <br>
+                @Html.Partial("_TweetBlock", new ViewDataDictionary { { "parent", ViewBag.getTweetsMadeByUsername } })
+
+            </div>
+            <div class="col-md-4">
+
+                <div class="card bg-dark text-white mb-3" style="width: 21rem;">
+                    <div class="card-header">
+                        <div>
+                            @if (userDetails.username == Session["username"] as string)
+                            {
+                                <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target="#tweetModal">Create Tweet</button>
+                            }
+                            else
+                            {
+                                string f = ViewBag.followThisPerson;
+                                if (f == "0")
+                                {
+                                    <button onclick="location.href='/Home/followThisPerson?name=@userDetails.username'" type="button" class="btn btn-secondary btn-lg btn-block">Follow</button>
+                                }
+                                else
+                                {
+                                    <button onclick="location.href='/Home/unfollowThisPerson?name=@userDetails.username'" type="button" class="btn btn-secondary btn-lg btn-block">Unfollow</button>
+                                }
+                            }
+                            </div>
+                    </div>
+
+                </div>
+
+                <div class="card bg-dark text-white" style="width: 21rem;">
+                    <div class="card-header">
+                        <h5 class="card-title">Who To Follow?</h5>
+                    </div>
+                    <div class="card-body bg-dark">
+                        @Html.Partial("_WhoToFollow", new ViewDataDictionary { { "parent", ViewBag.WhoToFollow } })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        @{
+            Html.RenderPartial("_CreateTweetModal");
+        }
+</body>
+</html>

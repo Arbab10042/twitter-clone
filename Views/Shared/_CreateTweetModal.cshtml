@@ -1,0 +1,46 @@
+﻿<div class="modal fade text-left" id="tweetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Tweet</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/Home/CreateTweet">
+                    <div class="form-group">
+                        <label for="tweetCaption">Caption</label>
+                        <textarea name="postString" class="form-control" id="tweetCaption" rows="3"
+                                  maxlength="199"
+                                  required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postCategory">Category</label>
+                        <input name="postCategory" value="general" placeholder="Write a category (without spaces) for your tweet." class="form-control" id="postCategory"
+                               pattern="^[a-zA-Z0-9]+$" title="Please remove any special characters or whitespaces"
+                               maxlength="50"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="formImage">Direct Image Link (Optional)</label>
+                        <input name="postImageURL" type="url" class="form-control" id="formImage" placeholder="https://sth.com/abc.png" pattern="[^\s]+"  title="Please remove the white space" maxlength="199">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="formImageUpload">Upload Image (Optional)</label>
+                        <input type="file" class="form-control-file" id="formImageUpload">
+                    </div>
+
+
+                    <hr>
+
+                    <button id="tweetFormSubmit" type="submit" class="btn btn-danger">Submit</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
